@@ -1,46 +1,67 @@
-<!-- <!DOCTYPE html>
+<!-- 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safar – AI Travel Assistant</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-</head>
-<body>
-  <div class="app">
-    <header class="chat-header">
-      <h1>Safar</h1>
-      <p>Your AI travel companion</p>
-    </header>
-    <div class="chat-window" id="chatWindow">
-      <div class="message assistant">
-  <img src="/static/assets/safar.png" class="avatar" />
-  <div class="bubble">
-    <p>
-      Hi, I’m Safar 👋  
-      I can help you with travel safety, best time to visit, stay options, and budget guidance.  
-      Ask me anything about your trip.
-    </p>
-  </div>
-</div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safar – AI Travel Assistant</title> -->
 
+  <!-- Google Fonts -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet"> -->
+
+  <!-- CSS -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="chat-body"> -->
+
+  <!-- NAVBAR -->
+  <!-- <nav class="navbar">
+    <div class="nav-left">
+      <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
+      <span class="nav-brand">safar.ai</span>
     </div>
-    <div class="chat-input">
-      <input 
-        type="text" 
-        id="userInput" 
-        placeholder="Ask about your travel plan..." 
-        autocomplete="off"
-      >
-      <button id="sendBtn">Send</button>
+  </nav> -->
+
+  <!-- CHAT APP -->
+  <!-- <main class="chat-wrapper">
+
+    <div class="app">
+      <header class="chat-header">
+        <h1>Safar</h1>
+        <p>Your AI travel companion</p>
+      </header>
+
+      <div class="chat-window" id="chatWindow"> -->
+
+        <!-- Initial message -->
+        <!-- <div class="message assistant">
+          <img src="/static/assets/safar.png" class="avatar" alt="Safar">
+          <div class="bubble">
+            Hi, I’m Safar 👋<br>
+            Tell me your destination, budget, and travel dates.
+          </div>
+        </div>
+
+      </div> -->
+<!-- 
+      <div class="chat-input">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Ask about your travel plan..."
+          autocomplete="off"
+        />
+        <button id="sendBtn">Send</button>
+      </div>
     </div>
-  </div>
+
+  </main>
+
   <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 </body>
 </html> -->
-
-
-
+<!--  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,27 +69,70 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Safar – AI Travel Assistant</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-</head>
-<body>
 
-  <div class="app">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="chat-page">
+
+<div class="chat-layout">
+
+ 
+  <aside class="sidebar">
+
+  
+    <div class="sidebar-brand">
+      <img src="{{ url_for('static', filename='assets/safar.png') }}" />
+      <span>safar.ai</span>
+    </div>
+
+    
+    <button class="new-chat-btn">＋ New chat</button>
+
+    
+    <input
+      type="text"
+      class="chat-search"
+      placeholder="Search chats"
+    />
+
+    
+    <div class="chat-history">
+      
+      <div class="chat-item active">Trip to Manali</div>
+      <div class="chat-item">Solo Goa trip</div>
+      <div class="chat-item">Europe budget plan</div>
+      <div class="chat-item">Paris itinerary</div>
+    </div>
+
+    
+    <div class="sidebar-user">
+      <span class="user-name">guest@safar.ai</span>
+    </div>
+
+  </aside>
+
+ 
+  <main class="chat-main">
+
+    
     <header class="chat-header">
       <h1>Safar</h1>
       <p>Your AI travel companion</p>
     </header>
 
+   
     <div class="chat-window" id="chatWindow">
 
-      <!-- Initial Safar message -->
       <div class="message assistant">
-        <img src="/static/assets/safar.png" class="avatar" alt="Safar" />
+        <img src="/static/assets/safar.png" class="avatar" alt="Safar">
         <div class="bubble">
-          <p>
-            Hi, I’m Safar 👋  
-            I can help you with travel safety, best time to visit, stay options,
-            and budget guidance. Ask me anything about your trip.
-          </p>
+          Hi, I’m Safar 👋<br>
+          Tell me your destination, budget, and travel dates.
         </div>
       </div>
 
@@ -83,8 +147,192 @@
       />
       <button id="sendBtn">Send</button>
     </div>
+
+  </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html> -->
+
+
+
+
+
+  
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safar – Chat</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="chat-page">
+
+<div class="chat-layout">
+     <aside class="sidebar">
+
+  
+  <div class="sidebar-header">
+    <img src="{{ url_for('static', filename='assets/safar.png') }}" class="sidebar-avatar" />
+    <span class="sidebar-brand">Safar</span>
   </div>
 
+ 
+  <button class="new-chat-btn" id="newChatBtn">+ New Chat</button>
+
+  <input type="text" class="chat-search" placeholder="Search chats" />
+
+  <div class="chat-history" id="chatHistory">
+    <p class="sidebar-title">Your chats</p>
+  </div>
+
+  <div class="sidebar-footer">
+    <span class="user-email">Not logged in</span>
+  </div>
+
+</aside>
+
+ 
+ 
+  <main class="chat-main">
+
+    <header class="chat-header">
+      <h1>Safar</h1>
+      <p>Your AI travel companion</p>
+    </header>
+
+    <div class="chat-window" id="chatWindow">
+      <div class="message assistant">
+        <img src="/static/assets/safar.png" class="avatar">
+        <div class="bubble">
+          Hi, I’m Safar 👋<br>
+          Tell me your destination, budget, and travel dates.
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input id="userInput" placeholder="Ask about your travel plan..." />
+      <button id="sendBtn">Send</button>
+    </div>
+
+  </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safar – AI Travel Assistant</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="chat-page">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
+      <span class="nav-title">safar.ai</span>
+    </div>
+  </nav>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- SAFAR HEADER -->
+      <div class="sidebar-header">
+        <img src="{{ url_for('static', filename='assets/safar.png') }}" class="sidebar-avatar">
+        <span class="sidebar-brand">Safar</span>
+      </div>
+
+      <!-- NEW CHAT -->
+      <button class="new-chat-btn" id="newChatBtn">
+        + New Chat
+      </button>
+
+      <!-- SEARCH -->
+      <input
+        type="text"
+        class="chat-search"
+        placeholder="Search chats"
+      />
+
+      <!-- CHAT HISTORY -->
+      <div class="chat-history">
+        <p class="sidebar-title">Your chats</p>
+        <!-- ✅ This is where chat sessions will load -->
+        <div id="chatList">
+          <p class="empty-chat">Loading chats...</p>
+        </div>
+      </div>
+
+      <!-- USER INFO (AUTH LATER) -->
+      <div class="sidebar-footer">
+        <span class="user-status">Not logged in</span>
+      </div>
+
+    </aside>
+
+    <!-- CHAT AREA -->
+    <main class="chat-wrapper">
+
+      <div class="app">
+
+        <!-- HEADER -->
+        <header class="chat-header">
+          <h1>Safar</h1>
+          <p>Your AI travel companion</p>
+        </header>
+
+        <!-- CHAT WINDOW -->
+        <div class="chat-window" id="chatWindow">
+          <!-- messages load dynamically -->
+        </div>
+
+        <!-- INPUT -->
+        <div class="chat-input">
+          <input
+            type="text"
+            id="userInput"
+            placeholder="Ask about your travel plan..."
+            autocomplete="off"
+          />
+          <button id="sendBtn">Send</button>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- JS -->
   <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+
 </body>
 </html>

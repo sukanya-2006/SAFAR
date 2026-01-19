@@ -10,3 +10,6 @@ desktop.ini
 
 # VS Code
 .vscode/
+
+venv/
+__pycache__/
