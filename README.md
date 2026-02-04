@@ -84,7 +84,7 @@ python --version  <br>
 pip --version     <br>
 git --version     <br>
 
-<b>Running the Project Locally:<b>
+<b>RUNNING THE PROJECT LOCALLY<b>
 
 1️⃣ Clone the Repository- <br>
 git clone https://github.com/your-username/SAFAR.git
@@ -122,7 +122,7 @@ http://127.0.0.1:5000/
 
 .
 
-🤝 How to Contribute: <br>
+🤝 HOW TO CONTRIBUTE <br>
 
 We welcome contributions from beginners and experienced developers alike
 
@@ -170,7 +170,7 @@ git push origin feature/your-feature-name<br>
 
 
 
-🧠 Contribution Guidelines <br>
+🧠CONTRIBUTION GUIDELINES <br>
 
 Keep commits small <br>
 Don’t commit .env files<br>
