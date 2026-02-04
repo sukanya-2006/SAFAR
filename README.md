@@ -23,83 +23,95 @@ python app.py -->
 
 
 
-🌍 Safar – AI Travel Assistant
+🌍 <b>SAFAR- AI TRAVEL ASSISTANT<b>
 
 Safar is an AI-powered travel assistant that helps users plan trips by answering questions related to destinations, budget, best time to visit, accommodation options, and travel safety.
 
 This project is built with a Flask backend, Supabase (PostgreSQL) database, and a clean frontend, following industry-style project organization and contribution practices.
 
-Features
+<b>FEATURES:<b>
 
 1.Clean landing page
+<br>
 2.Chat-based AI assistant UI
+<br>
 3.User & assistant message bubbles
+<br>
 4.Multiple informational pages (About, Features, FAQ)
+<br>
 5.Responsive design
+<br>
 6.Flask-based backend
+<br>
 7.Supabase (PostgreSQL) database integration
+<br>
 8.Environment-variable based configuration
+<br>
 
-Tech Stack
-Frontend:
-HTML
-CSS
-JavaScript
+Tech Stack <br>
+Frontend: <br>
+HTML<br>
+CSS<br>
+JavaScript<br>
 
-Backend:
-Python
-Flask
+Backend:<br>
+Python<br>
+Flask<br>
 
-Database:
-Supabase (PostgreSQL):
+Database:<br>
+Supabase (PostgreSQL)<br>
 
-Tools:
-Git & GitHub
-Virtual Environment (venv)
+Tools: <br>
+Git & GitHub <br>
+Virtual Environment (venv) <br>
 
 
-Folder Structure:
+<b>FOLDER STRUCTURE<b>
 
 ![Project Preview](image.png)
 
 
 
-Prerequisites:
+<b>Prerequisites:<b>
 
-Python 3.8+
-pip
-Git
+Python 3.8+ <br>
+pip <br>
+Git  <br>
 
-Check installation:
+<b>Check installation:<b>
 
-python --version
-pip --version
-git --version
+python --version  <br>
+pip --version     <br>
+git --version     <br>
 
-Running the Project Locally:
+<b>Running the Project Locally:<b>
 
-1️⃣ Clone the Repository-
+1️⃣ Clone the Repository- <br>
 git clone https://github.com/your-username/SAFAR.git
-cd SAFAR
+<br>
+cd SAFAR <br>
 
-2️⃣ Create & Activate Virtual Environment (Recommended):
+2️⃣ Create & Activate Virtual Environment (Recommended): <br>
 
-Windows
-python -m venv venv
-venv\Scripts\activate
+Windows<br>
+python -m venv venv<br>
+venv\Scripts\activate<br>
 
 3️⃣ Install Dependencies:
-pip install -r requirements.txt
+<br>
+pip install -r requirements.txt <br>
 
 
-4️⃣ Environment Setup
+4️⃣ Environment Setup <br>
 
 Create .env from the example:
+<br>
 cp .env.example .env
 
 
-5️⃣ Run the Application
-python app.py
+5️⃣ Run the Application:
+<br>
+python app.py <br>
 
 Open:
 http://127.0.0.1:5000/
@@ -110,57 +122,59 @@ http://127.0.0.1:5000/
 
 .
 
-🤝 How to Contribute:
+🤝 How to Contribute: <br>
 
 We welcome contributions from beginners and experienced developers alike
 
 
-Step 1: 
-Fork the Repository
-Go to the GitHub repository
-Click Fork (top-right)
+Step 1: <br>
+Fork the Repository<br>
+Go to the GitHub repository<br>
+Click Fork (top-right)<br>
 
-This creates a copy under your account
+This creates a copy under your account<br>
 
-Step 2: Clone Your Fork
-git clone https://github.com/your-username/SAFAR.git
-cd SAFAR
+Step 2: Clone Your Fork<br>
+git clone https://github.com/your-username/SAFAR.git <br>
+cd SAFAR<br>
 
 
 Step 3: Create a Branch
-git checkout -b feature/your-feature-name
+<br>
+git checkout -b feature/your-feature-name<br>
 
 
 Examples:
-
-git checkout -b fix-chat-ui
+<br>
+git checkout -b fix-chat-ui <br>
 git checkout -b improve-backend-logic
 
 
-Step 4: Make Changes
+Step 4: Make Changes <br>
 
-Follow existing structure
-Write clean, readable code
-Test locally before committing
-
-
-
-Step 5: Commit Changes
-git add .
-git commit -m "Short, meaningful commit message"
+Follow existing structure <br>
+Write clean, readable code <br>
+Test locally before committing <br>
 
 
 
-Step 6: Push to Your Fork
-git push origin feature/your-feature-name
+Step 5: Commit Changes  <br>
+git add . <br>
+git commit -m "Short, meaningful commit message" <br>
 
 
 
-🧠 Contribution Guidelines
+Step 6: Push to Your Fork <br> 
 
-Keep commits small
-Don’t commit .env files
-Follow project structure
-Write clear commit messages
-Be respectful and constructive
+git push origin feature/your-feature-name<br>
+
+
+
+🧠 Contribution Guidelines <br>
+
+Keep commits small <br>
+Don’t commit .env files<br>
+Follow project structure<br>
+Write clear commit messages<br>
+Be respectful and constructive<br>
 
