@@ -1260,9 +1260,9 @@ body.landing-page {
   flex-direction: column;
 }
 
-/* ============================= */
+
 /* SIDEBAR HEADER (AVATAR) */
-/* ============================= */
+
 
 .sidebar-header {
   display: flex;
@@ -1402,3 +1402,105 @@ body.landing-page {
   flex: 1;
   background: #f7f9fc;
 }  
+
+
+/* AUTH RIGHT NAV */
+
+.nav-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.auth-button{
+  padding:8px 16px;
+  border-radius:8px;
+  border:none;
+  background:#3a86ff;
+  color:white;
+  cursor:pointer;
+}
+
+.auth-button.secondary{
+  background:#e5e7eb;
+  color:#111827;
+}
+
+.user-profile{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.user-avatar{
+  width:32px;
+  height:32px;
+  background:#3a86ff;
+  color:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* MODAL */
+
+.auth-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:200;
+}
+
+.auth-modal.active{
+  display:flex;
+}
+
+.auth-modal-content{
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  width:350px;
+}
+
+.auth-form{
+  display:none;
+  flex-direction:column;
+  gap:10px;
+}
+
+.auth-form.active{
+  display:flex;
+}
+
+.auth-tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.auth-tab{
+  flex:1;
+  padding:10px;
+  border:none;
+  background:#f3f4f6;
+  cursor:pointer;
+}
+
+.auth-tab.active{
+  background:#3a86ff;
+  color:white;
+}
+
+.form-submit{
+  background:#3a86ff;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:8px;
+  cursor:pointer;
+}

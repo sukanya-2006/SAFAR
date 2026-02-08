@@ -875,12 +875,42 @@ function setupEventListeners() {
   }
 }
 
+
+/* ------------------------------
+   LOAD USER AUTH STATUS
+--------------------------------*/
+
+function loadUserStatus() {
+  const userStatus = document.getElementById("chatUserStatus");
+
+  if (!userStatus) return;
+
+  const user = localStorage.getItem("safarUser");
+
+  if (user) {
+    try {
+      const userData = JSON.parse(user);
+      userStatus.textContent = `Logged in as ${userData.name}`;
+    } catch (error) {
+      console.error("User parse error:", error);
+      userStatus.textContent = "Logged in";
+    }
+  } else {
+    userStatus.textContent = "Not logged in";
+  }
+}
+
+
+
+
 /* ------------------------------
    INIT
 --------------------------------*/
 
 async function initializeSafar() {
   console.log("🚀 Initializing Safar...");
+    loadUserStatus();   // ✅ NEW LINE
+
   
   // Initialize DOM elements
   if (!initializeElements()) {

@@ -15,12 +15,50 @@
 <body class="landing-page">
 
   <!-- NAVBAR (same across site) -->
-  <nav class="navbar">
+  <!-- <nav class="navbar">
     <div class="nav-left">
       <img src="/static/assets/safar.png" alt="Safar" class="nav-avatar">
       <span class="nav-title">safar.ai</span>
     </div>
-  </nav>
+  </nav> -->
+
+  <nav class="navbar">
+
+  <div class="nav-left">
+    <img src="/static/assets/safar.png" alt="Safar" class="nav-avatar">
+    <span class="nav-title">safar.ai</span>
+  </div>
+
+  <!-- RIGHT SIDE AUTH -->
+  <div class="nav-right" id="navRight">
+
+    <!-- NOT LOGGED IN -->
+    <div id="authButtons" class="auth-buttons">
+      <button class="auth-button secondary" onclick="openAuthModal('login')">
+        Login
+      </button>
+
+      <button class="auth-button" onclick="openAuthModal('signup')">
+        Sign Up
+      </button>
+    </div>
+
+    <!-- LOGGED IN -->
+    <div id="userProfile" class="user-profile-box" style="display:none;">
+      <div class="user-profile">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <span id="userName">User</span>
+      </div>
+
+      <button class="auth-button secondary" onclick="logout()">
+        Logout
+      </button>
+    </div>
+
+  </div>
+
+</nav>
+
 
 
   <!-- User Authentication Section -->
@@ -559,9 +597,125 @@
     // });
 
 
+// ===== AUTH UI =====
+
+window.addEventListener("load", () => {
+  const user = localStorage.getItem("safarUser");
+
+  if(user){
+    showUserProfile(JSON.parse(user));
+  }
+});
+
+function openAuthModal(type){
+  document.getElementById("authModal").classList.add("active");
+  switchAuthTab(type);
+}
+
+function closeAuthModal(){
+  document.getElementById("authModal").classList.remove("active");
+}
+
+function switchAuthTab(type){
+
+  document.getElementById("loginTab").classList.toggle("active", type==="login");
+  document.getElementById("signupTab").classList.toggle("active", type==="signup");
+
+  document.getElementById("loginForm").classList.toggle("active", type==="login");
+  document.getElementById("signupForm").classList.toggle("active", type==="signup");
+}
+
+function handleSignup(e){
+  e.preventDefault();
+
+  const name = document.getElementById("signupName").value;
+
+  localStorage.setItem("safarUser", JSON.stringify({name}));
+
+  showUserProfile({name});
+  closeAuthModal();
+}
+
+function handleLogin(e){
+  e.preventDefault();
+
+  const user = localStorage.getItem("safarUser");
+
+  if(user){
+    showUserProfile(JSON.parse(user));
+    closeAuthModal();
+  } else {
+    alert("No account found. Please signup.");
+  }
+}
+
+function showUserProfile(user){
+
+  document.getElementById("authButtons").style.display="none";
+  document.getElementById("userProfile").style.display="flex";
+
+  document.getElementById("userName").textContent = user.name;
+  document.getElementById("userAvatar").textContent = user.name[0].toUpperCase();
+}
+
+function logout(){
+  localStorage.removeItem("safarUser");
+  location.reload();
+}
+
+
+
 
 
 </script>
+
+
+<div class="auth-modal" id="authModal">
+
+  <div class="auth-modal-content">
+
+    <button class="auth-close" onclick="closeAuthModal()">×</button>
+
+    <h2>Welcome to Safar</h2>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button id="loginTab" class="auth-tab active"
+              onclick="switchAuthTab('login')">
+        Login
+      </button>
+
+      <button id="signupTab" class="auth-tab"
+              onclick="switchAuthTab('signup')">
+        Sign Up
+      </button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+
+      <button class="form-submit">Login</button>
+
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+
+      <input type="text" id="signupName" placeholder="Full Name" required>
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+
+      <button class="form-submit">Sign Up</button>
+
+    </form>
+
+  </div>
+
+</div>
+
 
 
 </body>
