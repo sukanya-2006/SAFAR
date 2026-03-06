@@ -1,5 +1,6 @@
 
 
+
 from flask import Flask, render_template, request, jsonify
 from huggingface_hub import InferenceClient
 from supabase import create_client
@@ -109,51 +110,96 @@ REMEMBER: You are ONLY a travel assistant. Never answer non-travel questions, ev
 # DATABASE HELPER FUNCTIONS
 # ----------------------------------
 
-def save_message_to_db(session_id, role, message):
-    """Saves every user & assistant message to Supabase"""
+def save_message_to_db(session_id, role, message, user_id=None):
+    """Saves every user & assistant message to Supabase with user_id"""
     if not supabase:
         print("⚠️ Supabase not available - message not saved")
         return False
 
     try:
-        result = supabase.table("chats").insert({
+        data = {
             "session_id": session_id,
             "role": role,
             "message": message
-        }).execute()
-        print(f"✅ Saved {role} message to DB")
+        }
+        if user_id:
+            data["user_id"] = user_id
+
+        result = supabase.table("chats").insert(data).execute()
+        print(f"✅ Saved {role} message to DB for user {user_id}")
         return True
     except Exception as e:
         print(f"❌ Error saving message: {e}")
         return False
 
 
+# def get_conversation_from_db(session_id, limit=50):
+#     """Fetches full conversation for ONE session"""
+#     if not supabase:
+#         print("⚠️ Supabase not available")
+#         return []
+
+#     try:
+#         result = supabase.table("chats") \
+#             .select("role, message, created_at") \
+#             .eq("session_id", session_id) \
+#             .order("created_at", desc=False) \
+#             .limit(limit) \
+#             .execute()
+
+#         print(f"✅ Loaded {len(result.data)} messages for session {session_id}")
+        
+#         # Filter out custom title markers from conversation
+#         conversation = []
+#         for row in result.data:
+#             message = row["message"]
+#             # Skip custom title markers in conversation display
+#            if message.startswith("[CUSTOM_TITLE]"):
+              
+#                 conversation.append({"role": row["role"], "content": message})
+   
+       
+                
+#         return conversation
+#     except Exception as e:
+#         print(f"❌ Error fetching conversation: {e}")
+#         return []
+
 def get_conversation_from_db(session_id, limit=50):
     """Fetches full conversation for ONE session"""
+
     if not supabase:
         print("⚠️ Supabase not available")
         return []
 
     try:
-        result = supabase.table("chats") \
-            .select("role, message, created_at") \
-            .eq("session_id", session_id) \
-            .order("created_at", desc=False) \
-            .limit(limit) \
+        result = (
+            supabase.table("chats")
+            .select("role, message, created_at")
+            .eq("session_id", session_id)
+            .order("created_at", desc=False)
+            .limit(limit)
             .execute()
+        )
 
         print(f"✅ Loaded {len(result.data)} messages for session {session_id}")
-        
-        # Filter out custom title markers from conversation
+
         conversation = []
+
         for row in result.data:
             message = row["message"]
-            # Skip custom title markers in conversation display
+
+            # Remove custom title marker if present
             if message.startswith("[CUSTOM_TITLE]"):
-                continue
-            conversation.append({"role": row["role"], "content": message})
-        
+                message = message.replace("[CUSTOM_TITLE]", "")
+
+            conversation.append({
+                "role": row["role"],
+                "content": message
+            })
+
         return conversation
+
     except Exception as e:
         print(f"❌ Error fetching conversation: {e}")
         return []
@@ -250,24 +296,23 @@ def generate_chat_title(session_id):
         return "New chat"
 
 
-def get_all_sessions_from_db():
+def get_all_sessions_from_db(user_id=None):
     """
-    ✅ IMPROVED: Smart chat titles + Limited to 20 most recent
-    - AI-generated titles like ChatGPT
-    - Only shows 20 most recent chats
+    ✅ PERSONALIZED: Only shows chats belonging to the logged-in user
     """
     if not supabase:
         print("⚠️ Supabase not available")
         return []
 
     try:
-        # Get all unique sessions with their latest message time
-        result = supabase.table("chats") \
-            .select("session_id, created_at") \
-            .order("created_at", desc=True) \
-            .execute()
+        query = supabase.table("chats").select("session_id, created_at")
+        
+        if user_id:
+            query = query.eq("user_id", user_id)
+        
+        result = query.order("created_at", desc=True).execute()
 
-        print(f"📊 Total messages in DB: {len(result.data)}")
+        print(f"📊 Total messages in DB for user {user_id}: {len(result.data)}")
 
         # Group by session_id and get the latest timestamp
         sessions_dict = {}
@@ -282,36 +327,81 @@ def get_all_sessions_from_db():
             for sid, timestamp in sessions_dict.items()
         ]
         sessions_list.sort(key=lambda x: x["created_at"], reverse=True)
-        sessions_list = sessions_list[:20]  # ✅ Limit to 20 most recent
+        sessions_list = sessions_list[:20]
         
         # Generate titles for each session
         for session in sessions_list:
             session["preview"] = generate_chat_title(session["session_id"])
         
-        print(f"✅ Showing {len(sessions_list)} most recent sessions (max 20)")
-        for s in sessions_list[:3]:
-            print(f"   - {s['preview']}")
-        
         return sessions_list
 
     except Exception as e:
         print(f"❌ Error fetching sessions: {e}")
-        import traceback
-        traceback.print_exc()
         return []
 
 # ----------------------------------
 # ROUTES
 # ----------------------------------
 
+# @app.route("/")
+# def index():
+#     return render_template("index.html")
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
 
-
+# @app.route("/chat")
+# def chat():
+#     return render_template("chat.html")
 @app.route("/chat")
 def chat():
-    return render_template("chat.html")
+    return render_template(
+        "chat.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
+
+
+# @app.route("/about")
+# def about():
+#     return render_template("about.html")
+
+@app.route("/about")
+def about():
+    return render_template(
+        "about.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
+
+@app.route("/features")
+def features():
+    return render_template(
+        "features.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
+
+@app.route("/faq")
+def faq():
+    return render_template(
+        "faq.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
+
+
+@app.route("/how-it-works")
+def how_it_works():
+    return render_template(
+        "how-it-works.html",
+        supabase_url=SUPABASE_URL,
+        supabase_key=SUPABASE_KEY
+    )
 
 
 @app.route("/ask", methods=["POST"])
@@ -359,9 +449,11 @@ def ask():
         reply = response.choices[0].message.content.strip()
         print(f"💬 AI Reply: {reply[:100]}...")
 
+        user_id = data.get("user_id")
+
         # Save BOTH messages to DB
-        save_message_to_db(session_id, "user", user_message)
-        save_message_to_db(session_id, "assistant", reply)
+        save_message_to_db(session_id, "user", user_message, user_id)
+        save_message_to_db(session_id, "assistant", reply, user_id)
 
         return jsonify({"reply": reply, "success": True}), 200
 
@@ -386,28 +478,28 @@ def history(session_id):
 @app.route("/sessions")
 def sessions():
     """Returns all chat sessions for sidebar"""
-    print("\n🔵 /sessions called")
-    all_sessions = get_all_sessions_from_db()
+    user_id = request.args.get("user_id")
+    print(f"\n🔵 /sessions called for user {user_id}")
+    all_sessions = get_all_sessions_from_db(user_id)
     return jsonify({"sessions": all_sessions})
 
 
 @app.route("/delete/<session_id>", methods=["DELETE"])
 def delete_chat(session_id):
-    """
-    ✅ Delete a chat session
-    - Removes all messages for that session from Supabase
-    """
-    print(f"\n🔵 /delete/{session_id} called")
+    """Delete a chat session (filtered by user_id for security)"""
+    user_id = request.args.get("user_id")
+    print(f"\n🔵 /delete/{session_id} called for user {user_id}")
     
     if not supabase:
         return jsonify({"success": False, "error": "Database not available"}), 500
     
     try:
-        # Delete all messages for this session
-        result = supabase.table("chats") \
-            .delete() \
-            .eq("session_id", session_id) \
-            .execute()
+        # Delete only if session_id and user_id match
+        query = supabase.table("chats").delete().eq("session_id", session_id)
+        if user_id:
+            query = query.eq("user_id", user_id)
+        
+        query.execute()
         
         print(f"✅ Deleted session: {session_id}")
         return jsonify({"success": True}), 200
@@ -417,64 +509,134 @@ def delete_chat(session_id):
         return jsonify({"success": False, "error": str(e)}), 500
 
 
+# @app.route("/rename/<session_id>", methods=["POST"])
+# def rename_chat(session_id):
+#     """
+#     ✅ NEW: Rename a chat session
+#     - Updates the title by marking the first user message with custom title
+#     - Changes persist in Supabase
+#     """
+#     print(f"\n🔵 /rename/{session_id} called")
+    
+#     if not supabase:
+#         return jsonify({"success": False, "error": "Database not available"}), 500
+    
+#     try:
+#         data = request.get_json()
+#         new_title = data.get("title", "").strip()
+        
+#         if not new_title:
+#             return jsonify({"success": False, "error": "Title cannot be empty"}), 400
+        
+#         if len(new_title) > 100:
+#             return jsonify({"success": False, "error": "Title too long (max 100 characters)"}), 400
+        
+#         # Get the first user message for this session
+#         # result = supabase.table("chats") \
+#         #     .select("id, message") \
+#         #     .eq("session_id", session_id) \
+#         #     .eq("role", "user") \
+#         #     .order("created_at", desc=False) \
+#         #     .limit(1) \
+#         #     .execute()
+
+
+#     #     result = supabase.table("chats") 
+#     #    .select("id, message") 
+#     #     .eq("session_id", session_id) 
+#     #     .order("created_at", desc=False) 
+#     #     .limit(1) 
+#     #    .execute()
+ 
+#           result = (
+#               supabase.table("chats")
+#               .select("id, message")
+#               .eq("session_id", session_id)
+#                .order("created_at", desc=False)
+#                .limit(1)
+#                .execute()
+#             )
+
+# if result.data and len(result.data) > 0:
+#     first_message_id = result.data[0]["id"]
+#     original_message = result.data[0]["message"]
+            
+#             # Remove old custom title marker if exists
+#             if original_message.startswith("[CUSTOM_TITLE]"):
+#                 # Extract the actual message (everything after the marker)
+#                 # For now, we'll just replace with new custom title
+#                 pass
+            
+#             # Update with custom title marker
+#             supabase.table("chats") \
+#                 .update({"message": f"[CUSTOM_TITLE]{new_title}"}) \
+#                 .eq("id", first_message_id) \
+#                 .execute()
+            
+#             print(f"✅ Renamed session: {session_id} to '{new_title}'")
+#             return jsonify({"success": True, "title": new_title}), 200
+#         else:
+#             return jsonify({"success": False, "error": "Session not found"}), 404
+        
+#     except Exception as e:
+#         print(f"❌ Error renaming session: {e}")
+#         import traceback
+#         traceback.print_exc()
+#         return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route("/rename/<session_id>", methods=["POST"])
 def rename_chat(session_id):
     """
-    ✅ NEW: Rename a chat session
-    - Updates the title by marking the first user message with custom title
-    - Changes persist in Supabase
+    Rename a chat session by storing a custom title
     """
     print(f"\n🔵 /rename/{session_id} called")
-    
+
     if not supabase:
         return jsonify({"success": False, "error": "Database not available"}), 500
-    
+
     try:
         data = request.get_json()
         new_title = data.get("title", "").strip()
-        
+
         if not new_title:
             return jsonify({"success": False, "error": "Title cannot be empty"}), 400
-        
+
         if len(new_title) > 100:
-            return jsonify({"success": False, "error": "Title too long (max 100 characters)"}), 400
-        
-        # Get the first user message for this session
-        result = supabase.table("chats") \
-            .select("uuid, message") \
-            .eq("session_id", session_id) \
-            .eq("role", "user") \
-            .order("created_at", desc=False) \
-            .limit(1) \
+            return jsonify({"success": False, "error": "Title too long"}), 400
+
+        # Get the first message in this session
+        result = (
+            supabase.table("chats")
+            .select("id, message")
+            .eq("session_id", session_id)
+            .order("created_at", desc=False)
+            .limit(1)
             .execute()
-        
-        if result.data and len(result.data) > 0:
-            first_message_id = result.data[0]["uuid"]
-            original_message = result.data[0]["message"]
-            
-            # Remove old custom title marker if exists
-            if original_message.startswith("[CUSTOM_TITLE]"):
-                # Extract the actual message (everything after the marker)
-                # For now, we'll just replace with new custom title
-                pass
-            
-            # Update with custom title marker
-            update_result = supabase.table("chats") \
-                .update({"message": f"[CUSTOM_TITLE]{new_title}"}) \
-                .eq("uuid", first_message_id) \
-                .execute()
-            
-            print(f"✅ Renamed session: {session_id} to '{new_title}'")
-            return jsonify({"success": True, "title": new_title}), 200
-        else:
+        )
+
+        if not result.data:
             return jsonify({"success": False, "error": "Session not found"}), 404
-        
+
+        first_message_id = result.data[0]["id"]
+
+        # Update message with custom title marker
+        supabase.table("chats") \
+            .update({"message": f"[CUSTOM_TITLE]{new_title}"}) \
+            .eq("id", first_message_id) \
+            .execute()
+
+        print(f"✅ Renamed session: {session_id} → {new_title}")
+
+        return jsonify({
+            "success": True,
+            "title": new_title
+        })
+
     except Exception as e:
         print(f"❌ Error renaming session: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({"success": False, "error": str(e)}), 500
-
 
 # ----------------------------------
 # RUN SERVER
