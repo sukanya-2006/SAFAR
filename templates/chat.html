@@ -1,13 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Safar – AI Travel Assistant</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <!-- CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -19,13 +21,30 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-left">
-      <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
-      <span class="nav-title">safar.ai</span>
+      <a href="{{ url_for('index') }}" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+        <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
+        <span class="nav-title">safar.ai</span>
+      </a>
+    </div>
+
+    <!-- RIGHT SIDE AUTH -->
+    <div class="nav-right" id="navRight">
+      <div id="authButtons" class="auth-buttons">
+        <button class="auth-button secondary" id="login-btn" onclick="openAuthModal('login')">Login</button>
+        <button class="auth-button" id="signup-btn" onclick="openAuthModal('signup')">Sign Up</button>
+      </div>
+      <div id="userProfile" class="user-profile-box" style="display:none;">
+        <div class="user-profile">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span id="userName">User</span>
+        </div>
+        <button class="auth-button secondary" onclick="logout()">Logout</button>
+      </div>
     </div>
   </nav>
 
   <!-- MAIN LAYOUT -->
-  <div class="layout">
+  <div class="layout" style="margin-top: 64px;">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -42,41 +61,27 @@
       </button>
 
       <!-- SEARCH -->
-      <input
-        type="text"
-        class="chat-search"
-        placeholder="Search chats"
-      />
+      <input type="text" class="chat-search" placeholder="Search chats" />
 
       <!-- CHAT HISTORY -->
       <div class="chat-history">
         <p class="sidebar-title">Your chats</p>
-        <!-- ✅ This is where chat sessions will load -->
         <div id="chatList">
           <p class="empty-chat">Loading chats...</p>
         </div>
       </div>
 
-      <!-- USER INFO (AUTH LATER) -->
-      <!-- <div class="sidebar-footer">
-        <span class="user-status">Not logged in</span>
-      </div> -->
+      <!-- USER INFO -->
       <div class="sidebar-footer">
-  <span class="user-status" id="chatUserStatus">Not logged in</span>
-     </div>
-
+        <span class="user-status" id="chatUserStatus">Not logged in</span>
+      </div>
 
     </aside>
-<!-- 
-    <div class="sidebar-footer">
-  <span class="user-status" id="chatUserStatus">Not logged in</span>
-    </div> -->
-
 
     <!-- CHAT AREA -->
     <main class="chat-wrapper">
 
-      <div class="app">
+      <div class="app" style="margin-top: 40px; height: calc(100vh - 140px);">
 
         <!-- HEADER -->
         <header class="chat-header">
@@ -91,12 +96,7 @@
 
         <!-- INPUT -->
         <div class="chat-input">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="Ask about your travel plan..."
-            autocomplete="off"
-          />
+          <input type="text" id="userInput" placeholder="Ask about your travel plan..." autocomplete="off" />
           <button id="sendBtn">Send</button>
         </div>
 
@@ -106,8 +106,46 @@
 
   </div>
 
+  <!-- AUTH MODAL -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-content">
+      <button class="auth-close" onclick="closeAuthModal()">×</button>
+      <h2>Welcome to Safar</h2>
+      <div class="auth-tabs">
+        <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+        <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+      </div>
+      <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button class="form-submit">Login</button>
+      </form>
+      <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <button class="form-submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
   <!-- JS -->
-  <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}?v=20240301"></script>
+  <script src="{{ url_for('static', filename='js/chat.js') }}"></script> -->
+   <!-- JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "{{ supabase_url }}";
+const SUPABASE_ANON_KEY = "{{ supabase_key }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script src="{{ url_for('static', filename='js/config.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 
 </body>
+
 </html>
