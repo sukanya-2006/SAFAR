@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>FAQ – Safar.ai</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="faq-page">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}"
+                style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
+                <span class="nav-title">safar.ai</span>
+            </a>
+        </div>
+
+        <div class="nav-right" id="navRight">
+            <div id="authButtons" class="auth-buttons">
+                <button class="auth-button secondary" onclick="openAuthModal('login')">Login</button>
+                <button class="auth-button" onclick="openAuthModal('signup')">Sign Up</button>
+            </div>
+            <div id="userProfile" class="user-profile-box" style="display:none;">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="auth-button secondary" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="about-hero" style="background: linear-gradient(135deg, #0f172a, #334155);">
+        <h1>Frequently Asked Questions</h1>
+        <p>Everything you need to know about Safar.ai</p>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="support-section" style="text-align: left; max-width: 800px; margin: auto;">
+        <div style="display: flex; flex-direction: column; gap: 40px; padding: 60px 24px;">
+
+            <div class="faq-item">
+                <h3>What is Safar.ai?</h3>
+                <p class="support-text" style="margin-top: 10px; color: #4b5563;">Safar.ai is your personal AI-powered
+                    travel assistant. It helps you plan itineraries, calculate budgets, find destinations, and learn
+                    about local customs through a conversational chat interface.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I start planning a trip?</h3>
+                <p class="support-text" style="margin-top: 10px; color: #4b5563;">Just head to the <a
+                        href="{{ url_for('chat') }}">Chat with Safar</a> page and tell me where you're thinking of
+                    going, how many days you have, and what your budget looks like.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Is my data safe?</h3>
+                <p class="support-text" style="margin-top: 10px; color: #4b5563;">Yes! We use Supabase (a secure
+                    PostgreSQL database) to store your chat history. Your conversations are private and only accessible
+                    to you when you're logged in.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can Safar book flights for me?</h3>
+                <p class="support-text" style="margin-top: 10px; color: #4b5563;">Currently, Safar is a
+                    <strong>planning</strong> assistant. We help you figure out the "where", "when", and "how", but we
+                    don't process bookings yet.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What topics does Safar cover?</h3>
+                <p class="support-text" style="margin-top: 10px; color: #4b5563;">Destinations, itineraries, budgets,
+                    food, visas, safety tips, culture, packing lists, and more. If it's about travel, Safar knows it!
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Project</h4>
+                <ul>
+                    <li><a href="{{ url_for('about') }}">About Safar</a></li>
+                    <li><a href="{{ url_for('how_it_works') }}">How It Works</a></li>
+                    <li><a href="{{ url_for('features') }}">Features</a></li>
+                    <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Assistant</h4>
+                <ul>
+                    <!-- <li><a href="{{ url_for('chat') }}">Trip Planning Help</a></li>
+                    <li><a href="{{ url_for('chat') }}">Budget Guidance</a></li>
+                    <li><a href="{{ url_for('chat') }}">Itinerary Suggestions</a></li>
+                    <li><a href="{{ url_for('chat') }}">Travel Tips</a></li> -->
+                     <li><a href="{{ url_for('chat') }}" onclick="goToChat(event)">Trip Planning Help</a></li>
+                     <li><a href="{{ url_for('chat') }}" onclick="goToChat(event)">Budget Guidance</a></li>
+                     <li><a href="{{ url_for('chat') }}" onclick="goToChat(event)">Itinerary Suggestions</a></li>
+                     <li><a href="{{ url_for('chat') }}" onclick="goToChat(event)">Travel Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-col" style="opacity: 0.5;">
+                <h4>Technology</h4>
+                <ul>
+                    <li><a href="#ai">AI Integration</a></li>
+                    <li><a href="#frontend">Frontend Stack</a></li>
+                    <li><a href="#backend">Backend & Database</a></li>
+                    <li><a href="#future">Future Enhancements</a></li>
+                </ul>
+            </div>
+            <div class="footer-col" style="opacity: 0.5;">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#demo">Project Demo</a></li>
+                    <li><a href="#github">GitHub Repository</a></li>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Safar – AI Travel Planning Assistant <br /> built as a minor academic project.</p>
+        </div>
+    </footer>
+
+    <!-- AUTH MODAL -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-content">
+            <button class="auth-close" onclick="closeAuthModal()">×</button>
+            <h2>Welcome to Safar</h2>
+            <div class="auth-tabs">
+                <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+            <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button class="form-submit">Login</button>
+            </form>
+            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+                <input type="text" id="signupName" placeholder="Full Name" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <button class="form-submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+<!-- 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "{{ supabase_url }}";
+const SUPABASE_ANON_KEY = "{{ supabase_key }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+
+</html>
