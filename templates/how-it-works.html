@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>How it Works – Safar.ai</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap"
+        rel="stylesheet">
+</head>
+
+<script>
+function goToChat(event){
+
+    const user = localStorage.getItem("safarUser");
+
+    if(!user){
+
+        event.preventDefault();
+
+        alert("Please login to start planning your trip ✈️");
+
+        openAuthModal('login');
+
+        return false;
+    }
+
+}
+</script>
+
+<body class="how-it-works-page">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}"
+                style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                <img src="{{ url_for('static', filename='assets/safar.png') }}" alt="Safar" class="nav-avatar">
+                <span class="nav-title">safar.ai</span>
+            </a>
+        </div>
+
+        <div class="nav-right" id="navRight">
+            <div id="authButtons" class="auth-buttons">
+                <button class="auth-button secondary" onclick="openAuthModal('login')">Login</button>
+                <button class="auth-button" onclick="openAuthModal('signup')">Sign Up</button>
+            </div>
+            <div id="userProfile" class="user-profile-box" style="display:none;">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <button class="auth-button secondary" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="about-hero" style="background: linear-gradient(135deg, #1e293b, #4b5563);">
+        <h1>How Safar works</h1>
+        <p>Simple steps to your next adventure</p>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="support-section">
+        <div class="support-grid">
+            <div class="support-card">
+                <div class="icon-box">1️⃣</div>
+                <h3>Log In or Sign Up</h3>
+                <p class="support-text">Create your account to save your chat history and travel plans, and access them
+                    anytime, anywhere.</p>
+            </div>
+            <div class="support-card">
+                <div class="icon-box">2️⃣</div>
+                <h3>Pick a Destination</h3>
+                <p class="support-text">Just let Safar know where you're headed. Whether it's a specific city or a
+                    general region, the AI gets to work instantly.</p>
+            </div>
+            <div class="support-card">
+                <div class="icon-box">3️⃣</div>
+                <h3>Tell Us Your Vibe</h3>
+                <p class="support-text">Are you a budget backpacker, a luxury traveler, or someone in between? Safar
+                    adapts its recommendations to your style.</p>
+            </div>
+            <div class="support-card">
+                <div class="icon-box">4️⃣</div>
+                <h3>Chat and Refine</h3>
+                <p class="support-text">Refine your plans in real-time. Don't like a specific day's plan? Just ask Safar
+                    to change it.</p>
+            </div>
+            <div class="support-card">
+                <div class="icon-box">5️⃣</div>
+                <h3>Save Your Chat</h3>
+                <p class="support-text">Your conversations are automatically saved. Go back and review your plan
+                    whenever you're ready to hit the road!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="final-cta-card">
+            <h2>Ready to start?</h2>
+            <!-- <a href="{{ url_for('chat') }}" class="cta-btn">Start your plan now →</a> -->
+             <a href="{{ url_for('chat') }}" class="cta-btn" onclick="goToChat(event)">
+             Start your plan now →
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Project</h4>
+                <ul>
+                    <li><a href="{{ url_for('about') }}">About Safar</a></li>
+                    <li><a href="{{ url_for('how_it_works') }}">How It Works</a></li>
+                    <li><a href="{{ url_for('features') }}">Features</a></li>
+                    <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Assistant</h4>
+                <ul>
+                    <li><a href="{{ url_for('chat') }}">Trip Planning Help</a></li>
+                    <li><a href="{{ url_for('chat') }}">Budget Guidance</a></li>
+                    <li><a href="{{ url_for('chat') }}">Itinerary Suggestions</a></li>
+                    <li><a href="{{ url_for('chat') }}">Travel Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-col" style="opacity: 0.5;">
+                <h4>Technology</h4>
+                <ul>
+                    <li><a href="#ai">AI Integration</a></li>
+                    <li><a href="#frontend">Frontend Stack</a></li>
+                    <li><a href="#backend">Backend & Database</a></li>
+                    <li><a href="#future">Future Enhancements</a></li>
+                </ul>
+            </div>
+            <div class="footer-col" style="opacity: 0.5;">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#demo">Project Demo</a></li>
+                    <li><a href="#github">GitHub Repository</a></li>
+                    <li><a href="#docs">Documentation</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Safar – AI Travel Planning Assistant <br /> built as a minor academic project.</p>
+        </div>
+    </footer>
+
+    <!-- AUTH MODAL -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-modal-content">
+            <button class="auth-close" onclick="closeAuthModal()">×</button>
+            <h2>Welcome to Safar</h2>
+            <div class="auth-tabs">
+                <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+            <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button class="form-submit">Login</button>
+            </form>
+            <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
+                <input type="text" id="signupName" placeholder="Full Name" required>
+                <input type="email" id="signupEmail" placeholder="Email" required>
+                <input type="password" id="signupPassword" placeholder="Password" required>
+                <button class="form-submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+const SUPABASE_URL = "{{ supabase_url }}";
+const SUPABASE_ANON_KEY = "{{ supabase_key }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+
+</html>
