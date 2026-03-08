@@ -2,10 +2,13 @@
 
 
 from flask import Flask, render_template, request, jsonify
-from huggingface_hub import InferenceClient
+# from huggingface_hub import InferenceClient
+from groq import Groq
 from supabase import create_client
+from sentence_transformers import SentenceTransformer
 import os
 from dotenv import load_dotenv
+embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # ----------------------------------
 # LOAD ENVIRONMENT VARIABLES
@@ -17,14 +20,23 @@ app = Flask(__name__)
 # ----------------------------------
 # HUGGING FACE CONFIGURATION
 # ----------------------------------
-HF_TOKEN = os.getenv("HF_API_TOKEN")
+# HF_TOKEN = os.getenv("HF_API_TOKEN")
 
-if not HF_TOKEN:
-    print("❌ ERROR: HF_API_TOKEN not found")
+# if not HF_TOKEN:
+#     print("❌ ERROR: HF_API_TOKEN not found")
+# else:
+#     print("✅ Hugging Face token loaded")
+
+# client = InferenceClient(token=HF_TOKEN)
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+if not GROQ_API_KEY:
+    print("❌ GROQ_API_KEY not found")
 else:
-    print("✅ Hugging Face token loaded")
+    print("✅ Groq API key loaded")
 
-client = InferenceClient(token=HF_TOKEN)
+client = Groq(api_key=GROQ_API_KEY)
 
 # ----------------------------------
 # SUPABASE CONFIGURATION
@@ -254,24 +266,26 @@ def generate_chat_title(session_id):
         
         # Use AI to generate a short title
         try:
-            response = client.chat_completion(
-                model="meta-llama/Llama-3.2-3B-Instruct",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You generate SHORT chat titles (3-5 words max) based on conversation. Examples: 'Manali trip planning', 'Bali budget guide', 'Europe visa help'. ONLY return the title, nothing else."
-                    },
-                    {
-                        "role": "user",
-                        "content": f"Generate a short title for this conversation:\n{conversation}"
-                    }
-                ],
-                max_tokens=20,
-                temperature=0.7
-            )
             
-            title = response.choices[0].message.content.strip()
+          
             # Remove quotes if AI added them
+            response = client.chat.completions.create(
+                #  model="llama3-8b-8192",
+                model="llama-3.3-70b-versatile",
+                 messages=[
+                {
+                    "role": "system",
+                   "content": "Generate a short 3-5 word chat title."
+                },
+               {
+                     "role": "user",
+                     "content": conversation
+                 }
+               ],
+              max_tokens=50
+             )
+
+            title = response.choices[0].message.content.strip()
             title = title.replace('"', '').replace("'", "")
             
             # Fallback to first user message if title is too long or generic
@@ -338,6 +352,67 @@ def get_all_sessions_from_db(user_id=None):
     except Exception as e:
         print(f"❌ Error fetching sessions: {e}")
         return []
+    
+
+
+def save_memory(user_id, text):
+    try:
+
+        embedding = embed_model.encode(text).tolist()
+
+        supabase.table("user_memory").insert({
+            "user_id": user_id,
+            "memory": text,
+            "embedding": embedding
+        }).execute()
+
+        print("🧠 Memory saved")
+
+    except Exception as e:
+        print("Memory save error:", e)
+
+# def get_user_memories(user_id):
+
+#     try:
+
+#         result = supabase.table("user_memory") \
+#             .select("memory") \
+#             .eq("user_id", user_id) \
+#             .limit(5) \
+#             .execute()
+
+#         memories = [m["memory"] for m in result.data]
+
+#         return memories
+
+#     except Exception as e:
+#         print("Memory fetch error:", e)
+#         return []
+
+def get_user_memories(user_id, query):
+
+    try:
+
+        query_embedding = embed_model.encode(query).tolist()
+
+        result = supabase.rpc(
+            "match_user_memory",
+            {
+                "query_embedding": query_embedding,
+                "match_user_id": user_id,
+                "match_count": 3
+            }
+        ).execute()
+
+        memories = [m["memory"] for m in result.data]
+
+        return memories
+
+    except Exception as e:
+        print("Memory search error:", e)
+        return []
+
+
 
 # ----------------------------------
 # ROUTES
@@ -403,12 +478,11 @@ def how_it_works():
         supabase_key=SUPABASE_KEY
     )
 
-
 @app.route("/ask", methods=["POST"])
 def ask():
-    """Handle chat messages with better error handling"""
+    """Handle chat messages"""
     print("\n🔵 /ask endpoint called")
-    
+
     try:
         data = request.get_json()
         user_message = data.get("message", "").strip()
@@ -420,51 +494,62 @@ def ask():
         if not user_message or not session_id:
             return jsonify({"reply": "Please ask a travel question 🌍", "success": False}), 400
 
-        # Load recent history from DB
+        # Load previous conversation
         history = get_conversation_from_db(session_id, limit=8)
         print(f"📚 Loaded {len(history)} previous messages")
 
-        messages = [{"role": "system", "content": SAFAR_SYSTEM_PROMPT}]
+        # messages = [{"role": "system", "content": SAFAR_SYSTEM_PROMPT}]
+        user_id = data.get("user_id")
+
+
+        memories = get_user_memories(user_id, user_message)
+
+        memory_text = ""
+
+        if memories:
+            memory_text = "\nUser preferences:\n" + "\n".join(memories)
+
+        messages = [{
+            "role": "system",
+            "content": SAFAR_SYSTEM_PROMPT + memory_text
+        }]
         messages.extend(history)
         messages.append({"role": "user", "content": user_message})
 
-        print("🤖 Calling Hugging Face API...")
-        
-        # Call AI model with timeout
-        try:
-            response = client.chat_completion(
-                model="meta-llama/Llama-3.2-3B-Instruct",
-                messages=messages,
-                max_tokens=300,
-                temperature=0.7
-            )
-            print("✅ AI response received")
-        except Exception as hf_error:
-            print(f"❌ Hugging Face API Error: {hf_error}")
-            return jsonify({
-                "reply": "I'm having trouble connecting to my AI brain right now. Please try again! 🤖",
-                "success": False
-            }), 500
+        print("🤖 Calling Groq API...")
+
+        # CALL GROQ
+        response = client.chat.completions.create(
+            # model="llama3-8b-8192",
+            model="llama-3.3-70b-versatile",
+            messages=messages,
+            temperature=0.7,
+            max_tokens=500
+        )
 
         reply = response.choices[0].message.content.strip()
+
+        print("✅ AI response received")
         print(f"💬 AI Reply: {reply[:100]}...")
 
         user_id = data.get("user_id")
-
-        # Save BOTH messages to DB
+        save_memory(user_id, user_message)
+        # Save messages to DB
         save_message_to_db(session_id, "user", user_message, user_id)
         save_message_to_db(session_id, "assistant", reply, user_id)
 
         return jsonify({"reply": reply, "success": True}), 200
 
     except Exception as e:
-        print(f"❌ CRITICAL ERROR in /ask: {e}")
+        print(f"❌ ERROR in /ask: {e}")
         import traceback
         traceback.print_exc()
+
         return jsonify({
-            "reply": "Something went wrong. Please try again.",
+            "reply": "I'm having trouble connecting to my AI brain right now. Please try again! 🤖",
             "success": False
         }), 500
+
 
 
 @app.route("/history/<session_id>")
@@ -508,81 +593,6 @@ def delete_chat(session_id):
         print(f"❌ Error deleting session: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
-
-# @app.route("/rename/<session_id>", methods=["POST"])
-# def rename_chat(session_id):
-#     """
-#     ✅ NEW: Rename a chat session
-#     - Updates the title by marking the first user message with custom title
-#     - Changes persist in Supabase
-#     """
-#     print(f"\n🔵 /rename/{session_id} called")
-    
-#     if not supabase:
-#         return jsonify({"success": False, "error": "Database not available"}), 500
-    
-#     try:
-#         data = request.get_json()
-#         new_title = data.get("title", "").strip()
-        
-#         if not new_title:
-#             return jsonify({"success": False, "error": "Title cannot be empty"}), 400
-        
-#         if len(new_title) > 100:
-#             return jsonify({"success": False, "error": "Title too long (max 100 characters)"}), 400
-        
-#         # Get the first user message for this session
-#         # result = supabase.table("chats") \
-#         #     .select("id, message") \
-#         #     .eq("session_id", session_id) \
-#         #     .eq("role", "user") \
-#         #     .order("created_at", desc=False) \
-#         #     .limit(1) \
-#         #     .execute()
-
-
-#     #     result = supabase.table("chats") 
-#     #    .select("id, message") 
-#     #     .eq("session_id", session_id) 
-#     #     .order("created_at", desc=False) 
-#     #     .limit(1) 
-#     #    .execute()
- 
-#           result = (
-#               supabase.table("chats")
-#               .select("id, message")
-#               .eq("session_id", session_id)
-#                .order("created_at", desc=False)
-#                .limit(1)
-#                .execute()
-#             )
-
-# if result.data and len(result.data) > 0:
-#     first_message_id = result.data[0]["id"]
-#     original_message = result.data[0]["message"]
-            
-#             # Remove old custom title marker if exists
-#             if original_message.startswith("[CUSTOM_TITLE]"):
-#                 # Extract the actual message (everything after the marker)
-#                 # For now, we'll just replace with new custom title
-#                 pass
-            
-#             # Update with custom title marker
-#             supabase.table("chats") \
-#                 .update({"message": f"[CUSTOM_TITLE]{new_title}"}) \
-#                 .eq("id", first_message_id) \
-#                 .execute()
-            
-#             print(f"✅ Renamed session: {session_id} to '{new_title}'")
-#             return jsonify({"success": True, "title": new_title}), 200
-#         else:
-#             return jsonify({"success": False, "error": "Session not found"}), 404
-        
-#     except Exception as e:
-#         print(f"❌ Error renaming session: {e}")
-#         import traceback
-#         traceback.print_exc()
-#         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/rename/<session_id>", methods=["POST"])
 def rename_chat(session_id):
