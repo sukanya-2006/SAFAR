@@ -3,9 +3,19 @@
 # supabase
 # python-dotenv
 
+# flask
+# gunicorn
+# groq
+# supabase
+# sentence-transformers
+# python-dotenv
+
+
+
 flask
 gunicorn
 groq
 supabase
 sentence-transformers
+torch
 python-dotenv
