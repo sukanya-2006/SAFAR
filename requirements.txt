@@ -1,4 +1,11 @@
+# flask
+# huggingface-hub
+# supabase
+# python-dotenv
+
 flask
-huggingface-hub
+gunicorn
+groq
 supabase
+sentence-transformers
 python-dotenv
