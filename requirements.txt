@@ -12,10 +12,19 @@
 
 
 
-flask
-gunicorn
+# flask
+# gunicorn
+# groq
+# supabase
+# sentence-transformers
+# torch
+# python-dotenv
+
+flask==3.0.3
+gunicorn==21.2.0
 groq
 supabase
 sentence-transformers
 torch
 python-dotenv
+requests

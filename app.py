@@ -1,36 +1,92 @@
 
-from flask import Flask, render_template, request, jsonify
-# from huggingface_hub import InferenceClient
-from groq import Groq
-from supabase import create_client
-from sentence_transformers import SentenceTransformer
-import os
-from dotenv import load_dotenv
-embed_model = SentenceTransformer("all-MiniLM-L6-v2")
+# from flask import Flask, render_template, request, jsonify
+# # from huggingface_hub import InferenceClient
+# from groq import Groq
+# from supabase import create_client
+# from sentence_transformers import SentenceTransformer
+# import os
+# from dotenv import load_dotenv
+# embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# ----------------------------------
-# LOAD ENVIRONMENT VARIABLES
-# ----------------------------------
+# # ----------------------------------
+# # LOAD ENVIRONMENT VARIABLES
+# # ----------------------------------
+# # load_dotenv()
+
+# # app = Flask(__name__)
+
+# # GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# # print("DEBUG KEY:", GROQ_API_KEY[:10])
+# # if not GROQ_API_KEY:
+# #     print("❌ GROQ_API_KEY not found")
+# # else:
+# #     print("✅ Groq API key loaded")
+
+# # client = Groq(api_key=GROQ_API_KEY)
 # load_dotenv()
 
 # app = Flask(__name__)
 
 # GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# print("DEBUG KEY:", GROQ_API_KEY[:10])
-# if not GROQ_API_KEY:
-#     print("❌ GROQ_API_KEY not found")
-# else:
+
+# if GROQ_API_KEY:
+#     print("DEBUG KEY:", GROQ_API_KEY[:10])
 #     print("✅ Groq API key loaded")
+# else:
+#     print("❌ GROQ_API_KEY not found")
 
 # client = Groq(api_key=GROQ_API_KEY)
+
+# # ----------------------------------
+# # SUPABASE CONFIGURATION
+# # ----------------------------------
+# SUPABASE_URL = os.getenv("SUPABASE_URL")
+# SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY")
+
+# if not SUPABASE_URL or not SUPABASE_KEY:
+#     print("❌ Supabase credentials missing")
+#     supabase = None
+# else:
+#     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+#     print("✅ Supabase connected")
+
+
+from flask import Flask, render_template, request, jsonify
+from groq import Groq
+from supabase import create_client
+from sentence_transformers import SentenceTransformer
+import os
+from dotenv import load_dotenv
+
+# ----------------------------------
+# LOAD ENVIRONMENT VARIABLES
+# ----------------------------------
+
 load_dotenv()
 
 app = Flask(__name__)
 
+# ----------------------------------
+# LAZY LOAD EMBEDDING MODEL
+# ----------------------------------
+
+embed_model = None
+
+def get_embed_model():
+    global embed_model
+    if embed_model is None:
+        print("🔄 Loading embedding model...")
+        embed_model = SentenceTransformer("all-MiniLM-L6-v2")
+        print("✅ Embedding model loaded")
+    return embed_model
+
+# ----------------------------------
+# GROQ CONFIGURATION
+# ----------------------------------
+
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 if GROQ_API_KEY:
-    print("DEBUG KEY:", GROQ_API_KEY[:10])
     print("✅ Groq API key loaded")
 else:
     print("❌ GROQ_API_KEY not found")
@@ -40,6 +96,7 @@ client = Groq(api_key=GROQ_API_KEY)
 # ----------------------------------
 # SUPABASE CONFIGURATION
 # ----------------------------------
+
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_ANON_KEY")
 
@@ -49,6 +106,8 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 else:
     supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
     print("✅ Supabase connected")
+
+
 
 # ----------------------------------
 # SYSTEM PROMPT
@@ -305,7 +364,8 @@ def get_all_sessions_from_db(user_id=None):
 
 def save_memory(user_id, text):
     try:
-        embedding = embed_model.encode(text).tolist()
+        # embedding = embed_model.encode(text).tolist()
+        embedding = get_embed_model().encode(text).tolist()
         supabase.table("user_memory").insert({
             "user_id": user_id,
             "memory": text,
@@ -318,7 +378,8 @@ def save_memory(user_id, text):
 
 def get_user_memories(user_id, query):
     try:
-        query_embedding = embed_model.encode(query).tolist()
+        # query_embedding = embed_model.encode(query).tolist()
+        query_embedding = get_embed_model().encode(query).tolist()
         result = supabase.rpc(
             "match_user_memory",
             {
