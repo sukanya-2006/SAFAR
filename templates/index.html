@@ -7,98 +7,66 @@
   <title>Safar – AI Travel Assistant</title>
 
   <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-modal.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <script>
 
 function getGreeting(){
-
   const hour = new Date().getHours();
-
   if(hour < 12) return "Good morning";
   if(hour < 17) return "Good afternoon";
   return "Good evening";
-
 }
 
 function typeWriter(element, text, speed=40){
-
   element.textContent = "";
   let i = 0;
-
   function typing(){
-
     if(i < text.length){
       element.textContent += text.charAt(i);
       i++;
       setTimeout(typing, speed);
     }
-
   }
-
   typing();
-
 }
 
 function loadHeroGreeting(){
-
   const user = localStorage.getItem("safarUser");
-
   const greetingEl = document.getElementById("heroGreeting");
   const messageEl = document.getElementById("heroMessage");
-
   if(!greetingEl || !messageEl) return;
-
   if(!user) return;
-
   try{
-
     const userData = JSON.parse(user);
     const name = userData.name || "Traveler";
-
     const greeting = getGreeting();
-
     greetingEl.textContent = `${greeting}, ${name} 👋`;
-
     const suggestions = [
-
       "Planning your next adventure? Tell me where you want to go ✈️",
       "Looking for a budget trip or luxury escape? I can help.",
       "Tell me your destination and I'll build the perfect itinerary.",
       "Dreaming about mountains, beaches, or cities? 🌍",
-      "Let’s plan a trip you'll never forget."
-
+      "Let's plan a trip you'll never forget."
     ];
-
     let index = 0;
-
     function rotateMessages(){
-
       const message = suggestions[index];
-
       typeWriter(messageEl, message);
-
       index = (index + 1) % suggestions.length;
-
     }
-
     rotateMessages();
-
     setInterval(rotateMessages, 5000);
-
   }
-
   catch(err){
-
     console.error("Greeting error", err);
-
   }
-
 }
 
 document.addEventListener("DOMContentLoaded", loadHeroGreeting);
@@ -115,84 +83,39 @@ document.addEventListener("DOMContentLoaded", loadHeroGreeting);
       </a>
     </div>
 
-    <!-- RIGHT SIDE AUTH -->
     <div class="nav-right" id="navRight">
-      <!-- NOT LOGGED IN -->
       <div id="authButtons" class="auth-buttons">
-        <button class="auth-button secondary" id="login-btn" onclick="openAuthModal('login')">
-          Login
-        </button>
-        <button class="auth-button" id="signup-btn" onclick="openAuthModal('signup')">
-          Sign Up
-        </button>
+        <button class="auth-button secondary" id="login-btn" onclick="openAuthModal('login')">Login</button>
+        <button class="auth-button" id="signup-btn" onclick="openAuthModal('signup')">Sign Up</button>
       </div>
-
-      <!-- LOGGED IN -->
       <div id="userProfile" class="user-profile-box" style="display:none;">
         <div class="user-profile">
           <div class="user-avatar" id="userAvatar">U</div>
           <span id="userName">User</span>
         </div>
-        <button class="auth-button secondary" onclick="logout()">
-          Logout
-        </button>
+        <button class="auth-button secondary" onclick="logout()">Logout</button>
       </div>
     </div>
   </nav>
 
   <!-- HERO SECTION -->
-  <!-- <section class="hero">
-    <div class="hero-overlay"></div>
+  <section class="hero">
     <div class="hero-content">
-      <h1 id="heroGreeting">Hi, I’m Safar ✈️</h1>
-      <p>
-        I help you plan confident, stress-free trips —
-        from destinations and budgets to itineraries and safety.
-      </p> -->
-      <!-- <div class="hero-greeting">
-    <h1 id="heroGreeting" class="hero-title">Hi, I’m Safar ✈️</h1>
-
-    <p id="heroMessage" class="hero-message">
-        I help you plan confident, stress-free trips.
-    </p>
-</div> -->
-
-<section class="hero">
-
-  <div class="hero-content">
-
-    <div class="hero-greeting">
-        <h1 id="heroGreeting" class="hero-title">Hi, I’m Safar ✈️</h1>
-
-        <p id="heroMessage" class="hero-message">
-            I help you plan confident, stress-free trips.
-        </p>
-
-
+      <div class="hero-greeting">
+        <h1 id="heroGreeting" class="hero-title">Hi, I'm Safar ✈️</h1>
+        <p id="heroMessage" class="hero-message">I help you plan confident, stress-free trips.</p>
+      </div>
+      <button class="hero-btn safar-chat-btn">Talk with Safar</button>
     </div>
+  </section>
 
-         <button class="hero-btn safar-chat-btn">
-  Talk with Safar
-</button>
-  </div>
-
-</section>
-    
   <!-- SCREEN 2 : VALUE SECTION -->
   <section class="value-section">
     <div class="value-card">
       <div class="value-left">
         <h2>Your trip in minutes,<br>not weeks.</h2>
-        <p>
-          Plan your next trip with Safar and save hours of research,
-          decision fatigue, and uncertainty.
-        </p>
-        <!-- <a href="{{ url_for('chat') }}" class="value-btn">
-          Plan my trip →
-        </a> -->
-        <button class="value-btn safar-chat-btn">
-        Plan my trip →
-     </button>
+        <p>Plan your next trip with Safar and save hours of research, decision fatigue, and uncertainty.</p>
+        <button class="value-btn safar-chat-btn">Plan my trip →</button>
       </div>
     </div>
   </section>
@@ -200,12 +123,8 @@ document.addEventListener("DOMContentLoaded", loadHeroGreeting);
   <!-- SCREEN 3 : DESTINATION INSPIRATION -->
   <section class="inspiration-section">
     <h2>Where to go next</h2>
-    <div class="card-grid" id="destinationGrid">
-      <!-- Will be populated by JS -->
-    </div>
+    <div class="card-grid" id="destinationGrid"></div>
   </section>
-
-
 
   <!-- SCREEN 4 : INFO / FEATURES -->
   <section class="info-card">
@@ -217,63 +136,45 @@ document.addEventListener("DOMContentLoaded", loadHeroGreeting);
       <span class="more-text">
         Ask me anything about planning your vacation — from dreamy destinations
         and cozy stays to flights, road trips, and more. Whether you're traveling
-        with kids, your partner, or solo, I’ll help you build the perfect itinerary.
-        No more juggling tabs and apps — I’m the only AI travel planner you need.
+        with kids, your partner, or solo, I'll help you build the perfect itinerary.
+        No more juggling tabs and apps — I'm the only AI travel planner you need.
       </span>
     </p>
     <div class="info-actions">
       <button class="read-toggle" id="readToggle">Read more</button>
-      <!-- <a href="{{ url_for('chat') }}" class="secondary-btn">
-        Create a new trip →
-      </a> -->
-      <button class="secondary-btn safar-chat-btn">
-         Create a new trip →
-    </button>
+      <button class="secondary-btn safar-chat-btn">Create a new trip →</button>
     </div>
   </section>
 
   <!-- SCREEN 5 : TRUST / FEATURES -->
   <section class="support-section">
     <h2>I will be there for you in every step</h2>
-    <p class="support-subtitle">
-      Curate, save and get notified about your trips on the go.
-    </p>
+    <p class="support-subtitle">Curate, save and get notified about your trips on the go.</p>
     <div class="support-grid">
-      <!-- CARD 1 -->
       <div class="support-card">
         <div class="icon-box">🤍</div>
         <h3>Tailor-made</h3>
         <p class="support-text">
           Ask Safar to create a personalized itinerary tailored to your preferences and travel style.
-          <span class="more-text">
-            Discover fully customized travel plans that match your interests, pace, and priorities—so every journey
-            feels truly yours.
-          </span>
+          <span class="more-text">Discover fully customized travel plans that match your interests, pace, and priorities—so every journey feels truly yours.</span>
         </p>
         <button class="read-toggle">Read more</button>
       </div>
-      <!-- CARD 2 -->
       <div class="support-card">
         <div class="icon-box">💰</div>
         <h3>Cheaper</h3>
         <p class="support-text">
           Safar helps you find the best deals and budget-friendly travel options.
-          <span class="more-text">
-            From affordable flights to discounted stays, Safar ensures you save money without compromising on
-            experience.
-          </span>
+          <span class="more-text">From affordable flights to discounted stays, Safar ensures you save money without compromising on experience.</span>
         </p>
         <button class="read-toggle">Read more</button>
       </div>
-      <!-- CARD 3 -->
       <div class="support-card">
         <div class="icon-box">💎</div>
         <h3>Hidden Gems</h3>
         <p class="support-text">
           Discover places that most tourists never find.
-          <span class="more-text">
-            Explore off-the-beaten-path destinations, local secrets, and unique experiences curated just for you.
-          </span>
+          <span class="more-text">Explore off-the-beaten-path destinations, local secrets, and unique experiences curated just for you.</span>
         </p>
         <button class="read-toggle">Read more</button>
       </div>
@@ -284,15 +185,8 @@ document.addEventListener("DOMContentLoaded", loadHeroGreeting);
   <section class="final-cta">
     <div class="final-cta-card">
       <h2>Ready to give it a try?</h2>
-      <p>
-        See how Safar can turn any travel idea into a plan in under a minute.
-      </p>
-      <!-- <a href="{{ url_for('chat') }}" class="cta-btn">
-        Try Safar now →
-      </a> -->
-      <button class="cta-btn safar-chat-btn">
-Try Safar now →
-</button>
+      <p>See how Safar can turn any travel idea into a plan in under a minute.</p>
+      <button class="cta-btn safar-chat-btn">Try Safar now →</button>
     </div>
   </section>
 
@@ -344,133 +238,82 @@ Try Safar now →
     </div>
   </footer>
 
-  <!-- AUTH MODAL -->
+  <!-- ✅ UPDATED AUTH MODAL -->
   <div class="auth-modal" id="authModal">
     <div class="auth-modal-content">
-      <button class="auth-close" onclick="closeAuthModal()">×</button>
-      <h2>Welcome to Safar</h2>
+
+      <button class="auth-close" onclick="closeAuthModal()">✕</button>
+
+      <h2>Welcome to <em>Safar</em></h2>
+      <p class="auth-subtitle">Plan smarter. Travel further. ✈️</p>
+
       <div class="auth-tabs">
-        <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">
-          Login
-        </button>
-        <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">
-          Sign Up
-        </button>
+        <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+        <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
       </div>
+
       <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button class="form-submit">Login</button>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="loginEmail" placeholder="Email address" required />
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="loginPassword" placeholder="Password" required />
+        </div>
+        <button type="submit" class="form-submit">Login to Safar</button>
       </form>
+
       <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
-        <input type="text" id="signupName" placeholder="Full Name" required>
-        <input type="email" id="signupEmail" placeholder="Email" required>
-        <input type="password" id="signupPassword" placeholder="Password" required>
-        <button class="form-submit">Sign Up</button>
+        <div class="input-wrap">
+          <span class="input-icon">👤</span>
+          <input type="text" id="signupName" placeholder="Full name" required />
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon">✉</span>
+          <input type="email" id="signupEmail" placeholder="Email address" required />
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="signupPassword" placeholder="Create password" required />
+        </div>
+        <button type="submit" class="form-submit">Create My Account</button>
       </form>
+
+      <p class="auth-modal-footer">
+        By continuing you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy</a>
+      </p>
+
     </div>
   </div>
 
   <!-- SCRIPTS -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="{{ url_for('static', filename='js/auth.js') }}?v=20240301"></script> -->
-  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Inject Supabase env variables from Flask -->
   <script>
     const SUPABASE_URL = "{{ supabase_url }}";
     const SUPABASE_ANON_KEY = "{{ supabase_key }}";
   </script>
 
   <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
-  <!-- <script>
 
-document.addEventListener("DOMContentLoaded", () => {
-
-  const talkBtn = document.getElementById("talkSafarBtn");
-
-  if (!talkBtn) return;
-
-  talkBtn.addEventListener("click", () => {
-
-    const user = localStorage.getItem("safarUser");
-
-    // ❌ If NOT logged in
-    if (!user) {
-
-      alert("Sorry! Please login before chatting with Safar ✈️");
-
-      // Open login modal automatically
-      openAuthModal("login");
-
-      return;
-    }
-
-    // ✅ If logged in → go to chat
-    window.location.href = "/chat";
-
-  });
-
-}); -->
-
-<script>
-
-// document.addEventListener("DOMContentLoaded", () => {
-
-//   const chatButtons = document.querySelectorAll(".safar-chat-btn");
-
-//   chatButtons.forEach(button => {
-
-//     button.addEventListener("click", () => {
-
-//       const user = localStorage.getItem("safarUser");
-
-//       // ❌ Not logged in
-//       if (!user) {
-
-//         alert("Sorry! Please login before chatting with Safar ✈️");
-
-//         openAuthModal("login");
-
-//         return;
-//       }
-
-//       // ✅ Logged in
-//       window.location.href = "/chat";
-
-//     });
-
-//   });
-
-// });
-document.addEventListener("click", function(e) {
-
-  if (e.target.classList.contains("safar-chat-btn")) {
-
-    const user = localStorage.getItem("safarUser");
-
-    if (!user) {
-      alert("Please login before chatting with Safar ✈️");
-      openAuthModal("login");
-      return;
-    }
-
-    window.location.href = "/chat";
-
-  }
-
-});
-
-</script>
-
-
-
-
+  <!-- Chat button guard -->
   <script>
-    // ============================
-    // DYNAMIC DESTINATIONS
-    // ============================
+    document.addEventListener("click", function(e) {
+      if (e.target.classList.contains("safar-chat-btn")) {
+        const user = localStorage.getItem("safarUser");
+        if (!user) {
+          alert("Please login before chatting with Safar ✈️");
+          openAuthModal("login");
+          return;
+        }
+        window.location.href = "/chat";
+      }
+    });
+  </script>
+
+  <!-- Dynamic destinations -->
+  <script>
     const destinations = [
       {
         title: "South of Spain",
@@ -495,25 +338,15 @@ document.addEventListener("click", function(e) {
     function renderDestinations() {
       const grid = document.getElementById("destinationGrid");
       if (!grid) return;
-
-      // grid.innerHTML = destinations.map((dest, i) => `
-      //   <div class="trip-card">
-      //     <div class="image-container">
-      //       <img src="/static/assets/${dest.images[0]}" alt="${dest.title}" id="dest-img-${i}">
-      //     </div>
-      //     <h3>${dest.desc}</h3>
-      //     <a href="${dest.link}" class="card-link">Start planning →</a>
-      //   </div>
-      // `).join('');
       grid.innerHTML = destinations.map((dest, i) => `
-  <div class="trip-card">
-    <div class="image-container">
-      <img src="/static/assets/${dest.images[0]}" alt="${dest.title}" id="dest-img-${i}">
-    </div>
-    <h3>${dest.desc}</h3>
-    <a class="card-link safar-chat-btn">Start planning →</a>
-  </div>
-`).join('');
+        <div class="trip-card">
+          <div class="image-container">
+            <img src="/static/assets/${dest.images[0]}" alt="${dest.title}" id="dest-img-${i}">
+          </div>
+          <h3>${dest.desc}</h3>
+          <a class="card-link safar-chat-btn">Start planning →</a>
+        </div>
+      `).join('');
 
       let imgIndex = 0;
       setInterval(() => {
@@ -534,16 +367,6 @@ document.addEventListener("click", function(e) {
     document.addEventListener("DOMContentLoaded", () => {
       renderDestinations();
 
-      const toggleBtn = document.getElementById("readToggle");
-      const moreText = document.querySelector(".more-text");
-
-      if (toggleBtn && moreText) {
-        toggleBtn.addEventListener("click", () => {
-          const expanded = moreText.classList.toggle("expanded");
-          toggleBtn.innerText = expanded ? "Read less" : "Read more";
-        });
-      }
-
       document.querySelectorAll(".read-toggle").forEach(button => {
         button.addEventListener("click", () => {
           const text = button.previousElementSibling;
@@ -555,6 +378,6 @@ document.addEventListener("click", function(e) {
       });
     });
   </script>
-</body>
 
-</html> 
+</body>
+</html>
