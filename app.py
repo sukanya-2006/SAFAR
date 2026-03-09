@@ -678,6 +678,10 @@ def rename_chat(session_id):
         return jsonify({"success": False, "error": str(e)}), 500
 
 
+@app.route("/health")
+def health():
+    return "SAFAR running", 200
+
 # ----------------------------------
 # RUN SERVER
 # ----------------------------------
