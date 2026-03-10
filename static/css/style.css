@@ -1397,3 +1397,98 @@ body.landing-page {
 
 .hero-title { color: black !important; }
 .hero-message { color: black !important; }
+
+
+/* Fix: Trip card destination images */
+.destination-gallery {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.destination-img {
+  width: 90px !important;
+  height: 70px !important;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+
+
+
+
+/* Map link button */
+.map-link-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 14px;
+  background: #1a73e8;
+  color: #ffffff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.map-link-btn:hover {
+  background: #1558b0;
+}
+
+
+
+
+
+
+
+
+/* Embedded map inside trip card */
+.trip-map-container {
+  margin: 12px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.trip-map-iframe {
+  width: 100%;
+  height: 200px;
+  border: none;
+  display: block;
+}
+
+
+
+
+/* Safety Rating Block */
+.safety-block {
+  margin: 12px 0;
+  padding: 10px 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+}
+
+.safety-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.safety-badge {
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.safety-info {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.5;
+}
