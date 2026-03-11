@@ -1492,3 +1492,180 @@ body.landing-page {
   color: #4b5563;
   line-height: 1.5;
 }
+
+
+/* ============================= */
+/* SOS EMERGENCY BUTTON & PANEL  */
+/* ============================= */
+
+/* SOS button inside trip card */
+.sos-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #dc2626;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.15s;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+.sos-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.sos-btn:active {
+  transform: translateY(0);
+}
+
+/* SOS panel that appears in chat */
+.sos-panel {
+  background: #fff5f5;
+  border: 2px solid #dc2626;
+  border-radius: 14px;
+  padding: 18px;
+  margin: 10px 0;
+  max-width: 480px;
+  align-self: flex-start;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.15);
+}
+
+.sos-panel-header {
+  font-size: 15px;
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 12px;
+}
+
+/* Emergency numbers */
+.sos-numbers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #fee2e2;
+}
+
+.sos-number-item {
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.sos-number-item a {
+  color: #dc2626;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 15px;
+  margin-left: 4px;
+}
+
+.sos-number-item a:hover {
+  text-decoration: underline;
+}
+
+/* Locating status text */
+.sos-locating {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* Hospital + Police map buttons */
+.sos-map-btns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.sos-map-link {
+  flex: 1;
+  min-width: 130px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+
+.sos-map-link:hover {
+  opacity: 0.85;
+}
+
+.sos-map-link.hospital {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.sos-map-link.police {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Close button */
+.sos-close-btn {
+  background: none;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sos-close-btn:hover {
+  background: #f3f4f6;
+}
+
+/* Women's Safety additions to SOS panel */
+.sos-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin: 10px 0 6px 0;
+}
+
+.women-numbers {
+  border-color: #fbcfe8 !important;
+  background: #fdf2f8 !important;
+}
+
+.sos-women-tips {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sos-tip {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.4;
+  padding: 4px 6px;
+  background: #ffffff;
+  border-radius: 6px;
+  border-left: 3px solid #ec4899;
+}
+
+.sos-map-link.shelter {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
