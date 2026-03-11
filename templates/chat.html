@@ -65,22 +65,12 @@
 
       <!-- CHAT HISTORY -->
       <div class="chat-history">
-      <p class="sidebar-title">Saved Trips</p>
-
-    <div id="savedTripsList">
-      <p class="empty-chat">No saved trips</p>
-    </div>
-
 
         <p class="sidebar-title">Your chats</p>
-        <!-- <p class="sidebar-title">Saved Trips</p> -->
-
-           <!-- <div id="savedTripsList">
-          <p class="empty-chat">No saved trips</p>
-          </div> -->
         <div id="chatList">
           <p class="empty-chat">Loading chats...</p>
         </div>
+
       </div>
 
       <!-- USER INFO -->
@@ -119,38 +109,6 @@
   </div>
 
   <!-- AUTH MODAL -->
-  <!-- <div class="auth-modal" id="authModal">
-    <div class="auth-modal-content">
-      <button class="auth-close" onclick="closeAuthModal()">×</button>
-      <h2>Welcome to Safar</h2>
-      <div class="auth-tabs">
-        <button id="loginTab" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-        <button id="signupTab" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
-      </div>
-      <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button class="form-submit">Login</button>
-      </form>
-      <form id="signupForm" class="auth-form" onsubmit="handleSignup(event)">
-        <input type="text" id="signupName" placeholder="Full Name" required>
-        <input type="email" id="signupEmail" placeholder="Email" required>
-        <input type="password" id="signupPassword" placeholder="Password" required>
-        <button class="form-submit">Sign Up</button>
-      </form>
-    </div>
-  </div> -->
-
-
-
-  <!-- 
-  ============================================================
-  REPLACE your existing AUTH MODAL block in chat.html with this
-  (everything between the AUTH MODAL comment tags)
-  ============================================================
--->
-
-<!-- AUTH MODAL -->
 <div class="auth-modal" id="authModal">
   <div class="auth-modal-content">
 
@@ -205,34 +163,17 @@
   </div>
 </div>
 
-<!--
-  ============================================================
-  Also add this ONE line to your <head> (Google Fonts):
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
-  And link the new CSS file:
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-modal.css') }}">
-  ============================================================
--->
-
   <!-- JS -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="{{ url_for('static', filename='js/auth.js') }}?v=20240301"></script>
-  <script src="{{ url_for('static', filename='js/chat.js') }}"></script> -->
-   <!-- JS -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 const SUPABASE_URL = "{{ supabase_url }}";
 const SUPABASE_ANON_KEY = "{{ supabase_key }}";
 </script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <script src="{{ url_for('static', filename='js/config.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </body>
 
 </html>
