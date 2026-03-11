@@ -1,12 +1,5 @@
 
 console.log("--- auth.js: Script loading started ---");
-// 
-/* ============================ */
-/* SUPABASE CONFIG              */
-/* ============================ */
-
-// const SUPABASE_URL = "https://aiykvnhtbljlphncqzmr.supabase.co";
-// const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY
 
 let supabaseClient = null;
 
