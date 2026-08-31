@@ -1,180 +1,144 @@
-<!-- # Safar – AI Travel Assistant
+# 🌍 SAFAR — AI Travel Assistant
 
-Safar is a beginner-friendly AI-powered travel assistant designed to help users
-plan trips by answering questions related to destinations, budget, best time to visit,
-stay options, and travel safety.
+> **Plan smarter. Travel better.**
 
-## Features
-- Clean landing page
-- Chat-based AI assistant UI
-- User & assistant message bubbles
-- Responsive design
-- Flask-based backend
+SAFAR is an AI-powered travel assistant that helps users plan trips by answering questions about **destinations, budget, best time to visit, accommodation, and travel safety**.
 
-## Tech Stack
-- HTML, CSS, JavaScript
-- Python (Flask)
-- GitHub for collaboration
+The project uses a **Flask backend, Supabase (PostgreSQL), and a responsive frontend**.
 
-## How to Run Locally
+---
+
+## ✨ Features
+
+* 🤖 AI-powered travel assistant
+* 💬 Chat-based interface
+* 🗺️ Destination recommendations
+* 💰 Budget & trip planning
+* 🏨 Accommodation guidance
+* 🌤️ Best time to visit information
+* 🛡️ Travel safety guidance
+* 📱 Responsive design
+* 📄 About, Features & FAQ pages
+* 🗄️ Supabase PostgreSQL integration
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:** HTML, CSS, JavaScript
+**Backend:** Python, Flask
+**Database:** Supabase (PostgreSQL)
+**Tools:** Git, GitHub, Python `venv`
+
+---
+
+## 📁 Project Structure
+
+```text
+SAFAR/
+│
+├── static/
+├── templates/
+├── app.py
+├── requirements.txt
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+---
+
+## ⚙️ Run Locally
+
+### 1. Clone the repository
+
 ```bash
-pip install -r requirement.txt
-python app.py -->
-
-
-
-🌍 <b>SAFAR- AI TRAVEL ASSISTANT<b>
-
-Safar is an AI-powered travel assistant that helps users plan trips by answering questions related to destinations, budget, best time to visit, accommodation options, and travel safety.
-
-This project is built with a Flask backend, Supabase (PostgreSQL) database, and a clean frontend, following industry-style project organization and contribution practices.
-
-<b>FEATURES:<b>
-
-1.Clean landing page
-<br>
-2.Chat-based AI assistant UI
-<br>
-3.User & assistant message bubbles
-<br>
-4.Multiple informational pages (About, Features, FAQ)
-<br>
-5.Responsive design
-<br>
-6.Flask-based backend
-<br>
-7.Supabase (PostgreSQL) database integration
-<br>
-8.Environment-variable based configuration
-<br>
-
-Tech Stack <br>
-Frontend: <br>
-HTML<br>
-CSS<br>
-JavaScript<br>
-
-Backend:<br>
-Python<br>
-Flask<br>
-
-Database:<br>
-Supabase (PostgreSQL)<br>
-
-Tools: <br>
-Git & GitHub <br>
-Virtual Environment (venv) <br>
-
-
-<b>FOLDER STRUCTURE<b>
-
-![Project Preview](image.png)
-
-
-
-<b>Prerequisites:<b>
-
-Python 3.8+ <br>
-pip <br>
-Git  <br>
-
-<b>Check installation:<b>
-
-python --version  <br>
-pip --version     <br>
-git --version     <br>
-
-<b>RUNNING THE PROJECT LOCALLY<b>
-
-1️⃣ Clone the Repository- <br>
 git clone https://github.com/your-username/SAFAR.git
-<br>
-cd SAFAR <br>
+cd SAFAR
+```
 
-2️⃣ Create & Activate Virtual Environment (Recommended): <br>
+### 2. Create a virtual environment
 
-Windows<br>
-python -m venv venv<br>
-venv\Scripts\activate<br>
+**Windows:**
 
-3️⃣ Install Dependencies:
-<br>
-pip install -r requirements.txt <br>
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
+**macOS / Linux:**
 
-4️⃣ Environment Setup <br>
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-Create .env from the example:
-<br>
-cp .env.example .env
+### 3. Install dependencies
 
+```bash
+pip install -r requirements.txt
+```
 
-5️⃣ Run the Application:
-<br>
-python app.py <br>
+### 4. Setup environment variables
 
-Open:
-http://127.0.0.1:5000/
+Create a `.env` file using `.env.example` and add the required configuration.
 
+> ⚠️ Never commit your `.env` file or expose API keys.
 
-🎉 Application is live locally.
+### 5. Run the application
 
+```bash
+python app.py
+```
 
-.
+Open **http://127.0.0.1:5000/** in your browser.
 
-🤝 HOW TO CONTRIBUTE <br>
+---
 
-We welcome contributions from beginners and experienced developers alike
+## 🤝 Contributing
 
+Contributions are welcome!
 
-Step 1: <br>
-Fork the Repository<br>
-Go to the GitHub repository<br>
-Click Fork (top-right)<br>
+1. Fork the repository
+2. Clone your fork
+3. Create a new branch
 
-This creates a copy under your account<br>
+```bash
+git checkout -b feature/your-feature-name
+```
 
-Step 2: Clone Your Fork<br>
-git clone https://github.com/your-username/SAFAR.git <br>
-cd SAFAR<br>
+4. Make your changes and test them
+5. Commit your changes
 
+```bash
+git add .
+git commit -m "Add your change"
+```
 
-Step 3: Create a Branch
-<br>
-git checkout -b feature/your-feature-name<br>
+6. Push your branch
 
+```bash
+git push origin feature/your-feature-name
+```
 
-Examples:
-<br>
-git checkout -b fix-chat-ui <br>
-git checkout -b improve-backend-logic
+7. Open a Pull Request 🚀
 
+---
 
-Step 4: Make Changes <br>
+## 🗺️ Roadmap
 
-Follow existing structure <br>
-Write clean, readable code <br>
-Test locally before committing <br>
+* [ ] Personalized trip planning
+* [ ] Better AI recommendations
+* [ ] Interactive maps
+* [ ] Real-time weather information
+* [ ] Saved itineraries
 
+---
 
+## ⭐ Contribute to SAFAR
 
-Step 5: Commit Changes  <br>
-git add . <br>
-git commit -m "Short, meaningful commit message" <br>
+If you like the project, consider **starring ⭐ the repository** and contributing to its development.
 
+### 🌍 SAFAR
 
-
-Step 6: Push to Your Fork <br> 
-
-git push origin feature/your-feature-name<br>
-
-
-
-🧠CONTRIBUTION GUIDELINES <br>
-
-Keep commits small <br>
-Don’t commit .env files<br>
-Follow project structure<br>
-Write clear commit messages<br>
-Be respectful and constructive<br>
-
+**Your journey starts with a conversation.**
